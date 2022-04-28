@@ -1,13 +1,34 @@
 import { BellIcon, SearchIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 /* import Image from 'next/image'
 import useAuth from '../hooks/useAuth'
-import { useEffect, useState } from 'react'
 import BasicMenu from './BasicMenu'
  */
 function Header() {
+  const [isScrolled, SetScrolled] = useState(false)
+
+  useEffect(() => {
+    //*Pomos um evento na janela se for scrollada dispara e activa
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        SetScrolled(true)
+      } else {
+        //* se nao mantem-se falsa
+        SetScrolled(false)
+      }
+    }
+    //*invocamos a funçao em cima  sobre um evento de scroll em js
+    window.addEventListener('scroll', handleScroll)
+
+    //* limpamos a função
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, []) //* deixamos como dependêcias vazias para não ser sempre recarregado sempre que haja um re render
+
   return (
-    <header>
+    <header className={`${isScrolled && 'bg-[red]'}`}>
       <div className="flex items-center space-x-2 md:space-x-10">
         <img
           src="https://rb.gy/ulxxee"
